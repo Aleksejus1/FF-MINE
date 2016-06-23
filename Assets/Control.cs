@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 namespace Control {
     public enum Key{
-        Up, Left, Down, Right, End
+        Up, Left, Down, Right, UpP2, LeftP2, DownP2, RightP2, End
     }
     [XmlRoot("Control")]
     [Serializable]
@@ -18,24 +18,29 @@ namespace Control {
             LoadKeys(Path.Combine(Application.persistentDataPath,"keys.xml"));
         }
         public void LoadKeys(string path){
-            List<KeyCode> loadedKeys = null;
+            List<KeyCode> loadedKeys = new List<KeyCode>();
+            /*
             var serializer = new XmlSerializer(typeof(List<KeyCode>));
             using (var stream = new FileStream(path, FileMode.Open)){
                 loadedKeys = serializer.Deserialize(stream) as List<KeyCode>;
             }
-            Debug.Log("Hi mom");
-            Debug.Log(loadedKeys.Count);
-            if (loadedKeys.Count == (int)Key.End - 1) keys = loadedKeys;
+            */
+            if (loadedKeys.Count > 0) keys = loadedKeys;
             else loadDefaultKeys();
         }
-        public void loadDefaultKeys() {
+        public void loadDefaultKeys()
+        {
             keys.Add(KeyCode.W);
             keys.Add(KeyCode.A);
             keys.Add(KeyCode.S);
             keys.Add(KeyCode.D);
+            keys.Add(KeyCode.UpArrow);
+            keys.Add(KeyCode.LeftArrow);
+            keys.Add(KeyCode.DownArrow);
+            keys.Add(KeyCode.RightArrow);
         }
-        public static bool Pressed(Key key) {
-            return Input.GetKeyDown(keys[(int)key]);
+        public bool Pressed(Key key) {
+            return Input.GetKey(keys[(int)key]);
         }
     }
 }
